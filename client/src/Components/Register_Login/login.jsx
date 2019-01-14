@@ -64,7 +64,7 @@ class Login extends Component {
     let formIsValid = isFormValid(this.state.formData, 'login');
 
     if(formIsValid) {
-      // console.log(dataToSubmit);
+      console.log(dataToSubmit);
       this.props.dispatch(loginUser(dataToSubmit))
         .then(response => {
           if (response.payload.loginSuccess) {
@@ -76,6 +76,9 @@ class Login extends Component {
             })
           }
         })
+      // this.props.dispatch(loginUser(dataToSubmit)).then(response => {
+      //   console.log(response)
+      // })
 
     } else {
       this.setState({
