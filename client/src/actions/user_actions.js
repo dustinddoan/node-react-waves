@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { USER_SERVER } from '../Components/utils/misc';
-import { LOGIN_USER, REGISTER_USER } from './types';
+import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from './types';
 
 // export const loginUser = (dataToSubmit) => async dispatch =>{
 //   const res = await axios.post(`${USER_SERVER}/login`, dataToSubmit)
@@ -30,11 +30,22 @@ export function registerUser(dataToSubmit) {
   }
 }
 
-// export const registerUser = (dataToSubmit) => async dispatch => {
-//   const res = await axios.post(`${USER_SERVER}/login`, dataToSubmit);
+export function auth() {
+  const request = axios.get(`${USER_SERVER}/auth`)
+    .then(response => response.data)
+  
+    return {
+      type: AUTH_USER,
+      payload: request
+    }
+}
 
-//   return {
-//     type: REGISTER_USER,
-//     payload: res.data
-//   }
-// }
+export function logoutUser() {
+  const request = axios.get(`${USER_SERVER}/logout`)
+    .then(response => response.data)
+  
+    return {
+      type: LOGOUT_USER,
+      payload: request
+    }
+}
