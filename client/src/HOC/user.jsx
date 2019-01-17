@@ -8,7 +8,7 @@ const links = [
   },
   {
     name: 'My Profile',
-    linkTo: '/user/User_profile'
+    linkTo: '/user/user_profile'
   },
   {
     name: 'My Cart',
