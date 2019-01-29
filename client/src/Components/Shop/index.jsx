@@ -2,28 +2,34 @@ import React, { Component } from 'react';
 import PageTop from '../utils/page_top'
 
 import { connect } from 'react-redux'
-import { getBrands, getWoods } from '../../actions/products_action'
+import { getProductsToShop, getBrands, getWoods } from '../../actions/products_action'
 
 import { frets, price } from '../utils/form/fix_categories'
 
 import CollapseCheckbox from '../utils/collapseCheckbox'
 import CollapseRadio from '../utils/collapseRadio'
 class Shop extends Component {
+
   state = {
     grid: '',
     limit: 6,
     skip: 0,
     filters: {
-      brand: [],
-      frets: [],
-      wood: [],
-      price: []
+        brand: [],
+        frets: [],
+        wood: [],
+        price: []
     }
-  }
+}
 
   componentDidMount() {
     this.props.dispatch(getBrands());
     this.props.dispatch(getWoods());
+    this.props.dispatch(getProductsToShop(
+            this.state.skip,
+            this.state.limit,
+            this.state.filters
+        ))
   }
 
   handlePrice = (value) => {
@@ -50,8 +56,22 @@ class Shop extends Component {
       newFilters[category] = priceValues
     }
 
+    this.showFilteredResult(newFilters);
+
     this.setState({
       filters: newFilters
+    })
+  }
+
+  showFilteredResult = (filters) => {
+    this.props.dispatch(getProductsToShop(
+      0,
+      this.state.limit,
+      filters
+    )).then(() => {
+      this.setState({
+        skip: 0
+      })
     })
   }
 
