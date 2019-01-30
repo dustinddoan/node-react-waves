@@ -55,10 +55,15 @@ export function getProductsToShop(skip, limit, filters = [], previousState = [])
 
   const request = axios.post(`${PRODUCT_SERVER}/shop`, data)
       .then(response => {
-          return {
-              size: response.data.size,
-              articles: response.data.articles
-          }
+        let newState = [
+          ...previousState,
+          ...response.data.articles
+        ]
+
+        return {
+          size: response.data.size,
+          articles: newState
+        }
       })
   
   return {
