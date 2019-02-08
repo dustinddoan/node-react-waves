@@ -9,6 +9,7 @@ import Register from './Components/Register_Login/register'
 import Shop from './Components/Shop'
 
 import UserDashboard from './Components/User'
+import AddProduct from './Components/User/Admin/add_product'
 import Cart from './Components/Cart'
 
 class Routes extends Component {
@@ -18,6 +19,7 @@ class Routes extends Component {
         <Switch>
           <Route path="/user/dashboard" exact component={Auth(UserDashboard, true)} />
           <Route path="/user/cart" exact component={Auth(Cart, true)} />
+          <Route path="/admin/add_product" exact component={Auth(AddProduct, true)} />
           <Route path="/register" exact component={Auth(Register, false)} />
           <Route path="/register_login" exact component={Auth(RegisterLogin, false)} />
           <Route path="/shop" exact component={Auth(Shop, null)} />
