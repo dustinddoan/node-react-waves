@@ -7,7 +7,6 @@ import { update, generateData, isFormValid, populateOptionFields, resetFields } 
 
 import { connect } from 'react-redux'
 import { getBrands, getWoods, addProduct, clearProduct } from '../../../actions/products_action'
-import { image } from "cloudinary";
 
 class AddProduct extends Component {
   state = {
@@ -206,7 +205,7 @@ class AddProduct extends Component {
   }
 
   resetFieldHandler = () => {
-    const newFormdata = resetFields(this.state.formdata)
+    const newFormdata = resetFields(this.state.formdata, 'products')
 
     this.setState({
       formdata: newFormdata,
@@ -355,7 +354,7 @@ class AddProduct extends Component {
           <div>
             {this.state.formError ?
               <div className="error_label">
-                Please check your credential
+                Please check your data
                     </div>
               : null}
 

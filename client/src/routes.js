@@ -10,6 +10,7 @@ import Shop from './Components/Shop'
 
 import UserDashboard from './Components/User'
 import AddProduct from './Components/User/Admin/add_product'
+import ManageCategories from './Components/User/Admin/manage_categories'
 import Cart from './Components/Cart'
 
 class Routes extends Component {
@@ -20,6 +21,7 @@ class Routes extends Component {
           <Route path="/user/dashboard" exact component={Auth(UserDashboard, true)} />
           <Route path="/user/cart" exact component={Auth(Cart, true)} />
           <Route path="/admin/add_product" exact component={Auth(AddProduct, true)} />
+          <Route path="/admin/manage_categories" exact component={Auth(ManageCategories, true)} />
           <Route path="/register" exact component={Auth(Register, false)} />
           <Route path="/register_login" exact component={Auth(RegisterLogin, false)} />
           <Route path="/shop" exact component={Auth(Shop, null)} />
