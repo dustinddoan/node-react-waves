@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import UserLayout from "../../../HOC/user";
 
 import FormField from '../../utils/form/FormField'
+import FileUpload from '../../utils/form/fileUpload'
 import { update, generateData, isFormValid, populateOptionFields, resetFields } from '../../utils/form/formActions'
 
 import { connect } from 'react-redux'
 import { getBrands, getWoods, addProduct, clearProduct } from '../../../actions/products_action'
+import { image } from "cloudinary";
 
 class AddProduct extends Component {
   state = {
@@ -174,6 +176,16 @@ class AddProduct extends Component {
         validationMessage: '',
         showlabel: true
       },
+      images: {
+        value:[],
+        validation: {
+          required: true
+        },
+        valid: true,
+        touched: false,
+        validationMessage: '',
+        showlabel: false
+      }
     }
   }
 
@@ -259,13 +271,29 @@ class AddProduct extends Component {
  
   }
 
-  
+  imagesHandler = (images) => {
+    const newFormdata = {
+      ...this.state.formdata
+    }
+
+    newFormdata['images'] = images
+    newFormdata['images'].valid = true;
+
+    this.setState({
+      formdata: newFormdata
+    })
+  }
 
   render() {
     return (
       <UserLayout>
         <h1>Add product</h1>
         <form onSubmit={event => this.submitForm(event)}>
+          <FileUpload 
+            imagesHandler={(images) => this.imagesHandler(images)}
+            reset={this.state.formSuccess}
+          />
+
           <FormField 
             id={'name'}
             formdata={this.state.formdata.name}
