@@ -271,16 +271,19 @@ class AddProduct extends Component {
   }
 
   imagesHandler = (images) => {
+    console.log('image handler:', images)
     const newFormdata = {
       ...this.state.formdata
     }
 
-    newFormdata['images'] = images
+    newFormdata['images'].value = images
     newFormdata['images'].valid = true;
 
     this.setState({
       formdata: newFormdata
     })
+
+    console.log(this.state)
   }
 
   render() {

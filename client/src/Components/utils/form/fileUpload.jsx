@@ -24,10 +24,12 @@ class FileUpload extends Component {
 
     axios.post('/api/users/uploadimage', formData, config)
       .then(response => {
+        // console.log('imnage upload: ', response.data)
         this.setState({ 
           uploading: false,
           uploadedFiles: [...this.state.uploadedFiles, response.data]
         }, () => {
+          console.log(this.state)
           this.props.imagesHandler(this.state.uploadedFiles)
         })
       })
