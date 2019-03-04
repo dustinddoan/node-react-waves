@@ -321,6 +321,30 @@ app.post('/api/users/addToCart', auth, (req, res) => {
   })
 })
 
+app.get('/api/users/removeFromCart', auth, (req, res) => {
+
+  User.findOneAndUpdate(
+    {_id: req.user._id},
+    {"$pull": 
+      {"cart": {"id": mongoose.Types.ObjectId(req.query._id)}}
+    },
+    { new: true},
+    (er, user) => {
+      let cart = user.cart;
+      let array = cart.map(item => {
+        return mongoose.Types.ObjectId(item.id)
+      })
+
+      Product
+        .find({'_id': {$in: array}})
+        .populate('brand')
+        .populate('wood')
+        .exec((err, cartDetail) => {
+          return res.status(200).json({cartDetail, cart})
+        })
+    }
+  )
+})
 
 // =========================
 //        SERVER
