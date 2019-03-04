@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { USER_SERVER } from '../Components/utils/misc';
+import { USER_SERVER, PRODUCT_SERVER } from '../Components/utils/misc';
 import { 
   LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER,
-  ADD_TO_CART_USER
+  ADD_TO_CART_USER, GET_CART_ITEMS_USER
 } from './types';
 
 // export const loginUser = (dataToSubmit) => async dispatch =>{
@@ -59,6 +59,29 @@ export function addToCart(_id) {
     
   return{
     type: ADD_TO_CART_USER,
+    payload: request
+  }
+}
+
+export function getCartItems(cartItems, userCart) {
+  const request = axios.get(`${PRODUCT_SERVER}/articles_by_id?id=${cartItems}&type=array`)
+    .then(response => {
+      console.log(response.data)
+      let cartList = response.data
+
+      userCart.forEach(item => {
+        cartList.forEach((cartItem, i) => {
+          if(item.id == cartItem._id) {
+            cartList[i].quantity = item.quantity
+          }
+        })
+      })
+
+      return cartList
+    })
+
+  return {
+    type: GET_CART_ITEMS_USER,
     payload: request
   }
 }
