@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import UserLayout from '../../HOC/user'
 import UserProductBlock from '../utils/User/product_block'
-
+import Paypal from '../utils/paypal'
 import {connect} from 'react-redux';
 import { getCartItems, removeCartItem } from '../../actions/user_actions'
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFrown from '@fortawesome/fontawesome-free-solid/faFrown'
 import faSmile from '@fortawesome/fontawesome-free-solid/faSmile'
+
+// AXVxo4Y3kCV46J6QE8hmBIcluin98YzpWFh9YOCRAU-fGJvkj8cxin-5cjqcFhI26VaEL7iVDVz5wY0E
 
 class Cart extends Component {
 
@@ -63,6 +65,21 @@ class Cart extends Component {
       })
   }
 
+  transactionError = () => {
+
+  }
+
+  transactionCanceled = () => {
+
+  }
+
+  transactionSuccess = () => {
+    this.setState({
+      showTotal: false,
+      showSuccess: true
+    })
+  }
+
   render() {
     return (
       <UserLayout>
@@ -104,7 +121,12 @@ class Cart extends Component {
           {
             this.state.showTotal ?
               <div className="paypal_button_container">
-                Paypal
+                <Paypal 
+                  toPay={this.state.total}
+                  transactionError={data => this.transactionError(data)}
+                  transactionCanceled={data => this.transactionCanceled(data)}
+                  transactionSuccess={data => this.transactionSuccess(data)}
+                />
               </div>
             : null
           }
