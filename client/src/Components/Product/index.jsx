@@ -3,6 +3,7 @@ import PageTop from '../utils/page_top';
 import { connect } from 'react-redux'
 
 import { getProductDetail, clearProductDetail } from '../../actions/products_action'
+import {addToCart} from '../../actions/user_actions'
 import ProdInfo from './prodInfo'
 import ProdImg from './prodImg'
 
@@ -24,7 +25,8 @@ class ProductPage extends Component {
   }
   
   addToCartHandler = (id) => {
-    
+    console.log(id);
+    this.props.dispatch(addToCart(id));
   }
   render() {
     return (

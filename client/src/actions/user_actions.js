@@ -56,6 +56,7 @@ export function logoutUser() {
 export function addToCart(_id) {
   const request = axios.post(`${USER_SERVER}/addToCart?productId=${_id}`)
     .then(response => response.data)
+    
   return{
     type: ADD_TO_CART_USER,
     payload: request
