@@ -71,7 +71,7 @@ export function getCartItems(cartItems, userCart) {
 
       userCart.forEach(item => {
         cartList.forEach((cartItem, i) => {
-          if(item.id == cartItem._id) {
+          if(item.id === cartItem._id) {
             cartList[i].quantity = item.quantity
           }
         })
