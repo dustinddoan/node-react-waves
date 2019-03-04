@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { USER_SERVER } from '../Components/utils/misc';
-import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from './types';
+import { 
+  LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER,
+  ADD_TO_CART_USER
+} from './types';
 
 // export const loginUser = (dataToSubmit) => async dispatch =>{
 //   const res = await axios.post(`${USER_SERVER}/login`, dataToSubmit)
@@ -48,4 +51,11 @@ export function logoutUser() {
       type: LOGOUT_USER,
       payload: request
     }
+}
+
+export function addToCart(_id) {
+  return{
+    type: ADD_TO_CART_USER,
+    payload: ''
+  }
 }
