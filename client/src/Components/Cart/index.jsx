@@ -3,7 +3,7 @@ import UserLayout from '../../HOC/user'
 import UserProductBlock from '../utils/User/product_block'
 import Paypal from '../utils/paypal'
 import {connect} from 'react-redux';
-import { getCartItems, removeCartItem } from '../../actions/user_actions'
+import { getCartItems, removeCartItem, onSuccessBuy } from '../../actions/user_actions'
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFrown from '@fortawesome/fontawesome-free-solid/faFrown'
@@ -73,11 +73,21 @@ class Cart extends Component {
 
   }
 
-  transactionSuccess = () => {
-    this.setState({
-      showTotal: false,
-      showSuccess: true
+  transactionSuccess = (data) => {
+    // console.log('cartdetail:', this.props.user.cartDetail)
+    // console.log('data:', data)
+    this.props.dispatch(onSuccessBuy({
+      cartDetail: this.props.user.cartDetail,
+      paymentData: data
+    })).then(() => {
+      if(this.props.user.successBuy) {
+        this.setState({
+          showTotal: false,
+          showSuccess: true
+        })
+      }
     })
+    
   }
 
   render() {

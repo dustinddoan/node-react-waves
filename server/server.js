@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const formidable = require('express-formidable');
 const cloudinary = require('cloudinary');
+const async = require('async');
 
 const app = express();
 const mongoose = require('mongoose'); // Object Data Modeling (ODM) library for MongoDB and Node.js
@@ -27,6 +28,7 @@ const { User } = require('./models/User')
 const { Brand } = require('./models/Brand')
 const { Wood } = require('./models/Wood')
 const { Product } = require('./models/Product')
+const { Payment } = require('./models/Payment')
 
 // Middlewares
 const { auth } = require('./middleware/auth');
@@ -344,6 +346,84 @@ app.get('/api/users/removeFromCart', auth, (req, res) => {
         })
     }
   )
+})
+
+app.post('/api/users/successBuy', auth, (req, res) => {
+  let history = []
+  let transactionData = {}
+  // console.log('server:', req.body.cartDetail)
+  // console.log('server:',req.body.paymentData)
+
+  // user history
+  req.body.cartDetail.forEach(item => {
+    history.push({
+      dateOfPurchase: Date.now(),
+      name: item.name,
+      brand: item.brand.name,
+      id: item._id,
+      price: item.price,
+      quantity: item.quantity,
+      paymentId: req.body.paymentData.paymentID
+    })
+  })
+
+  // payment dash
+  transactionData.user = {
+    id: req.user._id,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    email: req.user.email
+  }
+  transactionData.data = req.body.paymentData;
+  transactionData.product = history
+
+  // console.log('history:', history)
+  // console.log('transactionData:', transactionData)
+  // console.log('user:', req.user)  
+
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $push: { history: history}, $set: { cart: [] } },
+    { new: true },
+    (err, user) => {
+      if(err) return res.json({success: false, err})
+
+      const payment = new Payment(transactionData);
+
+      payment.save((err, doc) => {
+        // console.log('doc:', doc)
+        // console.log('payment:', payment)
+        if(err) return res.json({success: false, err});
+
+        let products = [];
+        doc.product.forEach(item => {
+          products.push({id: item.id, quantity: item.quantity})
+        })
+
+        console.log('products:', products)
+
+        async.eachSeries(products, (item, callback) => {
+          // console.log(products)
+          // console.log(item)
+          Product.update(
+            { _id: item.id},
+            { $inc: { "sold": item.quantity } },
+            { new: false },
+            callback 
+          )
+        }, (err) => {
+          if(err) return res.json({success: false, err})
+
+          res.status(200).json({
+            success: true,
+            cart: user.cart,
+            cartDetail: []
+          })
+        })
+      })
+    }
+  )
+
 })
 
 // =========================
