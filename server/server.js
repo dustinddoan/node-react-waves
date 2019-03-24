@@ -400,7 +400,7 @@ app.post('/api/users/successBuy', auth, (req, res) => {
           products.push({id: item.id, quantity: item.quantity})
         })
 
-        console.log('products:', products)
+        // console.log('products:', products)
 
         async.eachSeries(products, (item, callback) => {
           // console.log(products)
