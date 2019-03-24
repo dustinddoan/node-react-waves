@@ -23,7 +23,7 @@ const UserDashboard = ({user}) => {
         </div>
 
         {
-          user.userData.history ?
+          user.userData.history && user.userData.history.length > 0 ?
             <div className="user_nfo_panel">
               <h1>Order history</h1>
               <div className="user_product_block_wrapper">
