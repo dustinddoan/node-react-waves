@@ -13,6 +13,7 @@ import UserDashboard from './Components/User'
 import AddProduct from './Components/User/Admin/add_product'
 import ManageCategories from './Components/User/Admin/manage_categories'
 import Cart from './Components/Cart'
+import UpdateProfile from './Components/User/update_profile'
 
 class Routes extends Component {
   render() {
@@ -21,8 +22,10 @@ class Routes extends Component {
         <Switch>
           <Route path="/user/dashboard" exact component={Auth(UserDashboard, true)} />
           <Route path="/user/cart" exact component={Auth(Cart, true)} />
+          <Route path="/user/user_profile" exact component={Auth(UpdateProfile, true)} />
           <Route path="/admin/add_product" exact component={Auth(AddProduct, true)} />
           <Route path="/admin/manage_categories" exact component={Auth(ManageCategories, true)} />
+         
           <Route path="/register" exact component={Auth(Register, false)} />
           <Route path="/register_login" exact component={Auth(RegisterLogin, false)} />
           <Route path="/product_detail/:id" exact component={Auth(ProductPage, null)} />
